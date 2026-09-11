@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KNYWBot Guide</title>
+<style>
+  :root {
+    --bg: #1e1f22;
+    --panel: #2b2d31;
+    --panel-alt: #313338;
+    --border: #3a3c42;
+    --text: #e3e5e8;
+    --muted: #96989d;
+    --accent: #5865f2;
+    --accent-soft: #3b3f7a;
+    --good: #57f287;
+    --warn: #fee75c;
+    --bad: #ed4245;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 48px 20px 80px; }
+
+  header { text-align: center; margin-bottom: 48px; }
+  header .badge {
+    display: inline-block; background: var(--accent-soft); color: #c7cbff;
+    font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 999px; margin-bottom: 14px;
+  }
+  header h1 { font-size: 32px; margin: 0 0 8px; }
+  header p { color: var(--muted); font-size: 16px; margin: 0; max-width: 520px; margin: 0 auto; }
+
+  nav.jump {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin: 28px 0 0;
+  }
+  nav.jump a {
+    color: var(--muted); text-decoration: none; font-size: 13px;
+    border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px;
+  }
+  nav.jump a:hover { color: var(--text); border-color: var(--accent); }
+
+  section { margin-top: 44px; }
+  section h2 {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 20px; margin: 0 0 16px;
+  }
+  section h2 .icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px; font-size: 16px; flex-shrink: 0;
+  }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; margin-bottom: 12px;
+  }
+  .card h3 { margin: 0 0 6px; font-size: 15px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; }
+  .card code, p code, li code {
+    background: var(--panel-alt); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 6px; font-size: 0.9em; color: #c7cbff;
+  }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+  .pill-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .pill-list li {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; font-size: 14px;
+  }
+  .pill-list li strong { color: var(--text); }
+  .pill-list li span.tag {
+    display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .03em; padding: 2px 8px; border-radius: 999px; margin-left: 8px;
+  }
+  .tag.mod { background: rgba(237,66,69,0.15); color: #ff8b8d; }
+
+  .note {
+    border-left: 3px solid var(--accent); background: var(--panel);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 13.5px; color: var(--muted);
+    margin-top: 16px;
+  }
+  .note strong { color: var(--text); }
+
+  footer {
+    margin-top: 60px; text-align: center; color: var(--muted); font-size: 12.5px;
+    border-top: 1px solid var(--border); padding-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="badge">Clan bot guide</span>
+    <h1>KNYWBot</h1>
+    <p>Chats, banters, drops the occasional GIF, and keeps the server tidy. Here's everything it can do.</p>
+    <nav class="jump">
+      <a href="#chat">Chatting</a>
+      <a href="#gifs">GIF reactions</a>
+      <a href="#roles">Reaction roles</a>
+      <a href="#automod">Server rules</a>
+      <a href="#mod">Mod commands</a>
+    </nav>
+  </header>
+
+  <section id="chat">
+    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">💬</span>Talking to it</h2>
+    <div class="card">
+      <h3>@mention it, anywhere it's active</h3>
+      <p>Tag <code>@KNYWBot</code> with your question or your nonsense and it'll reply — casual,
+      clan-voice, not a customer-service bot. It knows Diablo 4 in general terms but has
+      <strong>no live game data</strong>, so for anything current-season/meta-specific it'll say so
+      instead of guessing.</p>
+    </div>
+    <div class="card">
+      <h3>It remembers the conversation — briefly</h3>
+      <p>Follow-up messages within the same back-and-forth keep context. Go quiet for
+      <strong>an hour</strong> and it starts fresh next time you mention it.</p>
+    </div>
+  </section>
+
+  <section id="gifs">
+    <h2><span class="icon" style="background:rgba(87,242,135,0.15)">🎬</span>GIF reactions</h2>
+    <div class="card">
+      <h3>It jumps into chat on its own — sometimes</h3>
+      <p>No command needed. When something in chat is genuinely funny, hype, or a disaster, it
+      might reply with a fitting GIF. It's deliberately picky — most messages don't get one, so
+      it doesn't turn into noise.</p>
+    </div>
+  </section>
+
+  <section id="roles">
+    <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🎭</span>Reaction roles</h2>
+    <div class="card">
+      <h3>React to opt in, unreact to opt out</h3>
+      <p>Where set up, reacting with a specific emoji on a pinned message grants you the matching
+      role instantly — no command needed. Removing your reaction removes the role. Ask a
+      <span class="tag mod">MODZ</span> member which messages have this set up on your server.</p>
+    </div>
+  </section>
+
+  <section id="automod">
+    <h2><span class="icon" style="background:rgba(237,66,69,0.15)">🛡️</span>Keeping the server clean</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-6px">
+      These happen automatically, for everyone except <span class="tag mod">MODZ</span> — if your
+      message vanishes, it's probably one of these:
+    </p>
+    <ul class="pill-list">
+      <li><strong>Discord invite links</strong> get removed on sight.</li>
+      <li><strong>Mass-mentioning</strong> a bunch of users/roles in one message gets removed.</li>
+      <li><strong>Posting too fast</strong> (spam bursts) gets caught and cleaned up.</li>
+      <li><strong>Banned words</strong>, if the server has any configured, get removed too.</li>
+    </ul>
+    <div class="note">
+      <strong>Not a punishment log you can see</strong> — actions like these are recorded in a
+      private mod-log channel for <span class="tag mod">MODZ</span>, not posted publicly.
+    </div>
+  </section>
+
+  <section id="mod">
+    <h2><span class="icon" style="background:rgba(150,152,157,0.2)">🔧</span>Mod commands</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:-6px">Only usable by members with the <span class="tag mod">MODZ</span> role.</p>
+    <div class="grid">
+      <div class="card"><h3><code>/kick</code></h3><p>Remove a member from the server.</p></div>
+      <div class="card"><h3><code>/ban</code></h3><p>Ban a member from the server.</p></div>
+      <div class="card"><h3><code>/mute</code></h3><p>Time out a member for a set number of minutes.</p></div>
+      <div class="card"><h3><code>/purge</code></h3><p>Bulk-delete recent messages in a channel.</p></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h3><code>/reactionrole-add</code></h3>
+      <p>Wire up a new reaction role: point it at a message, an emoji, and a role — it reacts to
+      the message and registers the mapping in one step.</p>
+    </div>
+  </section>
+
+  <footer>
+    KNYWBot &middot; built for this clan &middot; questions go to <span class="tag mod">MODZ</span>
+  </footer>
+
+</div>
+</body>
+</html>
