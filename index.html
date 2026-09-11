@@ -24,18 +24,18 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.5;
+    line-height: 1.55;
   }
-  .wrap { max-width: 780px; margin: 0 auto; padding: 48px 20px 80px; }
+  .wrap { max-width: 800px; margin: 0 auto; padding: 48px 20px 80px; }
 
-  header { text-align: center; margin-bottom: 48px; }
+  header { text-align: center; margin-bottom: 40px; }
   header .badge {
     display: inline-block; background: var(--accent-soft); color: #c7cbff;
     font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
     padding: 4px 12px; border-radius: 999px; margin-bottom: 14px;
   }
   header h1 { font-size: 32px; margin: 0 0 8px; }
-  header p { color: var(--muted); font-size: 16px; margin: 0; max-width: 520px; margin: 0 auto; }
+  header p { color: var(--muted); font-size: 16px; margin: 0 auto; max-width: 560px; }
 
   nav.jump {
     display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
@@ -47,23 +47,40 @@
   }
   nav.jump a:hover { color: var(--text); border-color: var(--accent); }
 
-  section { margin-top: 44px; }
+  .callout {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: linear-gradient(135deg, rgba(88,101,242,0.12), rgba(88,101,242,0.04));
+    border: 1px solid var(--accent-soft); border-radius: 12px;
+    padding: 18px 20px; margin-top: 32px;
+  }
+  .callout .glyph { font-size: 22px; line-height: 1; margin-top: 1px; }
+  .callout h3 { margin: 0 0 6px; font-size: 15px; }
+  .callout p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .callout a { color: #c7cbff; }
+
+  section { margin-top: 48px; }
+  section .kicker {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 6px;
+  }
   section h2 {
     display: flex; align-items: center; gap: 10px;
-    font-size: 20px; margin: 0 0 16px;
+    font-size: 21px; margin: 0 0 8px;
   }
   section h2 .icon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; border-radius: 8px; font-size: 16px; flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px; font-size: 17px; flex-shrink: 0;
   }
+  section > p.lead { color: var(--muted); font-size: 14.5px; margin: 0 0 18px; }
 
   .card {
     background: var(--panel); border: 1px solid var(--border);
     border-radius: 10px; padding: 18px 20px; margin-bottom: 12px;
   }
-  .card h3 { margin: 0 0 6px; font-size: 15px; }
+  .card h3 { margin: 0 0 6px; font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .card p { margin: 0; color: var(--muted); font-size: 14px; }
-  .card code, p code, li code {
+  .card p + p { margin-top: 8px; }
+  .card code, p code, li code, td code {
     background: var(--panel-alt); border: 1px solid var(--border);
     border-radius: 4px; padding: 1px 6px; font-size: 0.9em; color: #c7cbff;
   }
@@ -74,24 +91,35 @@
   .pill-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .pill-list li {
     background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
-    padding: 14px 16px; font-size: 14px;
+    padding: 14px 16px; font-size: 14px; color: var(--text);
   }
-  .pill-list li strong { color: var(--text); }
-  .pill-list li span.tag {
-    display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .03em; padding: 2px 8px; border-radius: 999px; margin-left: 8px;
+  .pill-list li .sub { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
+
+  span.tag {
+    display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .03em; padding: 2px 8px; border-radius: 999px;
   }
   .tag.mod { background: rgba(237,66,69,0.15); color: #ff8b8d; }
+  .tag.num { background: rgba(88,101,242,0.15); color: #b6bdff; font-family: ui-monospace, monospace; }
+  .tag.live { background: rgba(87,242,135,0.15); color: #7dfab0; }
+  .tag.off { background: rgba(150,152,157,0.18); color: #c3c4c8; }
+
+  .table-scroll { overflow-x: auto; margin-top: 4px; }
+  table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+  td:last-child, th:last-child { text-align: right; }
 
   .note {
     border-left: 3px solid var(--accent); background: var(--panel);
     padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 13.5px; color: var(--muted);
     margin-top: 16px;
   }
+  .note.warn { border-left-color: var(--warn); }
   .note strong { color: var(--text); }
 
   footer {
-    margin-top: 60px; text-align: center; color: var(--muted); font-size: 12.5px;
+    margin-top: 64px; text-align: center; color: var(--muted); font-size: 12.5px;
     border-top: 1px solid var(--border); padding-top: 20px;
   }
 </style>
@@ -100,87 +128,199 @@
 <div class="wrap">
 
   <header>
-    <span class="badge">Clan bot guide</span>
+    <span class="badge">Clan bot guide — in depth</span>
     <h1>KNYWBot</h1>
-    <p>Chats, banters, drops the occasional GIF, and keeps the server tidy. Here's everything it can do.</p>
+    <p>A complete, accurate breakdown of what the bot currently does — how it talks, what it
+    reads, what it stores, and what it enforces. Numbers reflect live settings and can be tuned
+    by a mod without notice.</p>
     <nav class="jump">
+      <a href="#monitoring">What it reads</a>
       <a href="#chat">Chatting</a>
       <a href="#gifs">GIF reactions</a>
-      <a href="#roles">Reaction roles</a>
-      <a href="#automod">Server rules</a>
+      <a href="#automod">Auto-mod</a>
+      <a href="#logging">Logging & data</a>
+      <a href="#roles">Roles</a>
       <a href="#mod">Mod commands</a>
     </nav>
   </header>
 
+  <section id="monitoring">
+    <p class="kicker">Start here</p>
+    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">👁️</span>What it reads, and where</h2>
+    <p class="lead">The short version: every message is checked for auto-mod rules. Only two
+    channels feed a message's actual content to an AI model, and only two features do that.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Feature</th><th>Where it runs</th><th>What it does with the text</th></tr></thead>
+        <tbody>
+          <tr><td>Auto-mod scan</td><td>Every channel, every message</td><td>Pattern-checked locally (invite links, mention count, banned words, posting speed) — never sent to an AI model</td></tr>
+          <tr><td>AI chat</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — only when @mentioned</td><td>Sent to an AI model to generate a reply</td></tr>
+          <tr><td>GIF reactions</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — every message, not just mentions</td><td>Occasionally sent to an AI model to judge if it's reaction-worthy</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Not monitored:</strong> DMs (the bot doesn't read or respond to direct messages),
+      voice channels/voice chat, and — for chat/GIF purposes — every channel outside the two
+      listed above. Auto-mod's pattern checks (invites/mentions/spam/banned words) are the
+      exception: those run server-wide, in every text channel, since that's a moderation
+      function rather than a conversational one.
+    </div>
+    <div class="note warn">
+      <strong>Members with the <span class="tag mod">MODZ</span> role are exempt from auto-mod</strong>
+      entirely — their messages aren't pattern-checked.
+    </div>
+  </section>
+
   <section id="chat">
-    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">💬</span>Talking to it</h2>
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">💬</span>Chatting with the bot</h2>
     <div class="card">
-      <h3>@mention it, anywhere it's active</h3>
-      <p>Tag <code>@KNYWBot</code> with your question or your nonsense and it'll reply — casual,
-      clan-voice, not a customer-service bot. It knows Diablo 4 in general terms but has
-      <strong>no live game data</strong>, so for anything current-season/meta-specific it'll say so
-      instead of guessing.</p>
+      <h3>@mention it in an active channel</h3>
+      <p>Tag <code>@KNYWBot</code> with your question or your nonsense in
+      <code>#knywbot-testing</code> or <code>#💀-town-square</code> and it replies — casual,
+      clan-voice, not a customer-service bot. Mentioning it anywhere else does nothing.</p>
     </div>
     <div class="card">
-      <h3>It remembers the conversation — briefly</h3>
-      <p>Follow-up messages within the same back-and-forth keep context. Go quiet for
-      <strong>an hour</strong> and it starts fresh next time you mention it.</p>
+      <h3>It has no live game data</h3>
+      <p>It's a general-purpose AI model with a Diablo 4-flavored personality prompt, not a build
+      database. For current-season/meta-specific questions it's told to admit it doesn't know
+      rather than invent a plausible-sounding but wrong answer — including build names, item
+      names, or links. If it ever states something oddly specific and confident about current
+      patch content, be skeptical.</p>
+    </div>
+    <div class="card">
+      <h3>It remembers your conversation — briefly</h3>
+      <p>Follow-ups keep context for up to the last <span class="tag num">10</span> messages
+      between you and it. Go quiet for <span class="tag num">60 min</span> and it forgets —
+      next mention starts fresh. This memory lives only in the bot's running memory (RAM); a bot
+      restart clears everyone's context instantly, and it's never written to disk.</p>
+    </div>
+    <div class="card">
+      <h3>Anti-flood limits</h3>
+      <p>Per person: <span class="tag num">1 msg / 12s</span> cooldown, and
+      <span class="tag num">50</span> messages/day. Server-wide: at most
+      <span class="tag num">3</span> replies being generated at once — if you're rate-limited
+      you'll get a short heads-up instead of silence (except when the server-wide limit is the
+      cause, which stays silent to avoid adding more noise while already busy).</p>
+    </div>
+    <div class="card">
+      <h3>Steered away from a few topics</h3>
+      <p>It's instructed to decline or steer off real-money-trading/gold-selling/account-selling
+      talk and cheat/exploit/botting discussion. Standard AI safety filtering (harassment, hate
+      speech, explicit content) applies underneath regardless.</p>
     </div>
   </section>
 
   <section id="gifs">
+    <p class="kicker">Feature</p>
     <h2><span class="icon" style="background:rgba(87,242,135,0.15)">🎬</span>GIF reactions</h2>
     <div class="card">
-      <h3>It jumps into chat on its own — sometimes</h3>
-      <p>No command needed. When something in chat is genuinely funny, hype, or a disaster, it
-      might reply with a fitting GIF. It's deliberately picky — most messages don't get one, so
-      it doesn't turn into noise.</p>
+      <h3>It's watching for a good moment — not every message</h3>
+      <p>In the same two channels as chat, every message (not just @mentions) is a candidate.
+      On each one, it rolls a <span class="tag num">15%</span> chance to even consider reacting,
+      and won't consider another one within <span class="tag num">240s</span> of its last GIF —
+      so it can react at most once every 4 minutes, and usually less often than that.</p>
     </div>
-  </section>
-
-  <section id="roles">
-    <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🎭</span>Reaction roles</h2>
     <div class="card">
-      <h3>React to opt in, unreact to opt out</h3>
-      <p>Where set up, reacting with a specific emoji on a pinned message grants you the matching
-      role instantly — no command needed. Removing your reaction removes the role. Ask a
-      <span class="tag mod">MODZ</span> member which messages have this set up on your server.</p>
+      <h3>When it does consider one, an AI model judges the vibe</h3>
+      <p>It's instructed to be picky — funny, hype, a brag, a fail, a rage-quit moment — and to
+      skip anything ordinary. If it decides something fits, it picks a short search phrase and
+      posts a matching GIF as a reply to that message. The match is vibe-based, not a literal
+      keyword echo, so it can occasionally read a message differently than you'd expect.</p>
     </div>
   </section>
 
   <section id="automod">
-    <h2><span class="icon" style="background:rgba(237,66,69,0.15)">🛡️</span>Keeping the server clean</h2>
-    <p style="color:var(--muted);font-size:14px;margin-top:-6px">
-      These happen automatically, for everyone except <span class="tag mod">MODZ</span> — if your
-      message vanishes, it's probably one of these:
-    </p>
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(237,66,69,0.15)">🛡️</span>Auto-mod</h2>
+    <p class="lead">Runs on every message, in every text channel on the server — this is the one
+    feature not limited to the two AI channels. Checked in order; the first match wins and the
+    message is deleted immediately.</p>
     <ul class="pill-list">
-      <li><strong>Discord invite links</strong> get removed on sight.</li>
-      <li><strong>Mass-mentioning</strong> a bunch of users/roles in one message gets removed.</li>
-      <li><strong>Posting too fast</strong> (spam bursts) gets caught and cleaned up.</li>
-      <li><strong>Banned words</strong>, if the server has any configured, get removed too.</li>
+      <li>Discord invite link posted <span class="sub">any <code>discord.gg/…</code> or <code>discord.com/invite/…</code> link, always on</span></li>
+      <li>Mass-mentioning <span class="tag num">&gt;5</span> users/roles in one message <span class="sub">counts users and roles together</span></li>
+      <li>A banned word/phrase <span class="sub">currently <span class="tag off">no words configured</span> — this rule is a no-op until a mod adds some</span></li>
+      <li>Posting too fast: more than <span class="tag num">5</span> messages within <span class="tag num">7s</span> <span class="sub">tracked per person, server-wide</span></li>
     </ul>
     <div class="note">
-      <strong>Not a punishment log you can see</strong> — actions like these are recorded in a
-      private mod-log channel for <span class="tag mod">MODZ</span>, not posted publicly.
+      Every auto-mod deletion is recorded — see <a href="#logging" style="color:#c7cbff">Logging</a> below.
+    </div>
+  </section>
+
+  <section id="logging">
+    <p class="kicker">Transparency</p>
+    <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🗂️</span>Logging & data retention</h2>
+    <p class="lead">Everything below posts to a private <code>#mod-logs</code> channel, visible
+    only to <span class="tag mod">MODZ</span> — none of it is public.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Event</th><th>What's recorded</th></tr></thead>
+        <tbody>
+          <tr><td>Message deleted</td><td>Author, channel, and the message's text</td></tr>
+          <tr><td>Message edited</td><td>Author, channel, before &amp; after text</td></tr>
+          <tr><td>Auto-mod action</td><td>Who, where, which rule, and the offending text</td></tr>
+          <tr><td>Member joins / leaves</td><td>Username and user ID</td></tr>
+          <tr><td><code>/kick</code> <code>/ban</code> <code>/mute</code> <code>/purge</code></td><td>Who ran it, on whom, and the reason given</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <strong>What's NOT stored anywhere long-term:</strong> ordinary chat messages that are
+      never edited/deleted, and the 1-hour conversation memory described above (in RAM only,
+      never written to disk). There's no permanent database of everything anyone's said.
+    </div>
+  </section>
+
+  <section id="roles">
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🎭</span>Roles</h2>
+    <div class="card">
+      <h3>Join role</h3>
+      <p>New members automatically get a <strong>Member</strong> role the moment they join —
+      nothing to do on your end.</p>
+    </div>
+    <div class="card">
+      <h3>Reaction roles <span class="tag off">none set up yet</span></h3>
+      <p>The system exists — react with a specific emoji on a message a mod has wired up, and
+      you instantly get a matching role; remove your reaction to remove the role — but no
+      messages currently have this configured on this server. This section will get more
+      specific once one exists.</p>
     </div>
   </section>
 
   <section id="mod">
+    <p class="kicker">Restricted</p>
     <h2><span class="icon" style="background:rgba(150,152,157,0.2)">🔧</span>Mod commands</h2>
-    <p style="color:var(--muted);font-size:14px;margin-top:-6px">Only usable by members with the <span class="tag mod">MODZ</span> role.</p>
+    <p class="lead">Gated by the <span class="tag mod">MODZ</span> role specifically — not
+    Discord's built-in Kick/Ban/etc. permissions. Someone can have full server admin rights and
+    still not be able to run these without the role, and vice versa.</p>
     <div class="grid">
-      <div class="card"><h3><code>/kick</code></h3><p>Remove a member from the server.</p></div>
-      <div class="card"><h3><code>/ban</code></h3><p>Ban a member from the server.</p></div>
-      <div class="card"><h3><code>/mute</code></h3><p>Time out a member for a set number of minutes.</p></div>
-      <div class="card"><h3><code>/purge</code></h3><p>Bulk-delete recent messages in a channel.</p></div>
+      <div class="card"><h3><code>/kick</code></h3><p>Remove a member from the server. Takes an optional reason.</p></div>
+      <div class="card"><h3><code>/ban</code></h3><p>Ban a member from the server. Takes an optional reason.</p></div>
+      <div class="card"><h3><code>/mute</code></h3><p>Discord-native timeout for a given number of minutes, with a reason.</p></div>
+      <div class="card"><h3><code>/purge</code></h3><p>Bulk-delete up to 100 recent messages in the current channel.</p></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3><code>/reactionrole-add</code></h3>
-      <p>Wire up a new reaction role: point it at a message, an emoji, and a role — it reacts to
-      the message and registers the mapping in one step.</p>
+      <p>Point it at a message ID, an emoji, and a role — it reacts to the message with that
+      emoji <em>and</em> registers the mapping in one step, so members can immediately start
+      self-assigning.</p>
     </div>
   </section>
+
+  <div class="callout">
+    <span class="glyph">🛠️</span>
+    <div>
+      <h3>Behind the scenes</h3>
+      <p>Every number on this page (cooldowns, thresholds, the mod role name, banned words) is
+      tunable live by the bot owner through a private admin panel, with no bot restart needed.
+      It's not member-accessible — mentioned here purely for completeness, since this page aims
+      to reflect exactly what's actually running, not just what shipped on day one.</p>
+    </div>
+  </div>
 
   <footer>
     KNYWBot &middot; built for this clan &middot; questions go to <span class="tag mod">MODZ</span>
