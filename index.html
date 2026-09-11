@@ -100,6 +100,7 @@
     letter-spacing: .03em; padding: 2px 8px; border-radius: 999px;
   }
   .tag.mod { background: rgba(237,66,69,0.15); color: #ff8b8d; }
+  .tag.boost { background: rgba(87,242,135,0.15); color: #7dfab0; }
   .tag.num { background: rgba(88,101,242,0.15); color: #b6bdff; font-family: ui-monospace, monospace; }
   .tag.live { background: rgba(87,242,135,0.15); color: #7dfab0; }
   .tag.off { background: rgba(150,152,157,0.18); color: #c3c4c8; }
@@ -109,6 +110,16 @@
   th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); }
   th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
   td:last-child, th:last-child { text-align: right; }
+
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  .steps li {
+    counter-increment: step; position: relative; padding: 4px 0 4px 34px; font-size: 14px; color: var(--text);
+  }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 3px;
+    width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: #c7cbff;
+    font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  }
 
   .note {
     border-left: 3px solid var(--accent); background: var(--panel);
@@ -137,6 +148,8 @@
       <a href="#monitoring">What it reads</a>
       <a href="#chat">Chatting</a>
       <a href="#gifs">GIF reactions</a>
+      <a href="#karma">Karma</a>
+      <a href="#boost">Boost requests</a>
       <a href="#automod">Auto-mod</a>
       <a href="#logging">Logging & data</a>
       <a href="#roles">Roles</a>
@@ -147,15 +160,16 @@
   <section id="monitoring">
     <p class="kicker">Start here</p>
     <h2><span class="icon" style="background:rgba(88,101,242,0.15)">👁️</span>What it reads, and where</h2>
-    <p class="lead">The short version: every message is checked for auto-mod rules. Only two
-    channels feed a message's actual content to an AI model, and only two features do that.</p>
+    <p class="lead">The short version: auto-mod and karma-giving watch every channel; AI chat,
+    GIF reactions, and web search are confined to two channels; nothing else gets read.</p>
 
     <div class="table-scroll">
       <table>
         <thead><tr><th>Feature</th><th>Where it runs</th><th>What it does with the text</th></tr></thead>
         <tbody>
           <tr><td>Auto-mod scan</td><td>Every channel, every message</td><td>Pattern-checked locally (invite links, mention count, banned words, posting speed) — never sent to an AI model</td></tr>
-          <tr><td>AI chat</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — only when @mentioned</td><td>Sent to an AI model to generate a reply</td></tr>
+          <tr><td>Karma (<code>@user++</code>/<code>--</code>)</td><td>Every channel, every message</td><td>Pattern-checked locally for the mention+<code>++</code>/<code>--</code> syntax — no AI involved</td></tr>
+          <tr><td>AI chat</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — only when @mentioned</td><td>Sent to an AI model, which can also call a real web search or post a boost request on your behalf (see below)</td></tr>
           <tr><td>GIF reactions</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — every message, not just mentions</td><td>Occasionally sent to an AI model to judge if it's reaction-worthy</td></tr>
         </tbody>
       </table>
@@ -164,9 +178,7 @@
     <div class="note">
       <strong>Not monitored:</strong> DMs (the bot doesn't read or respond to direct messages),
       voice channels/voice chat, and — for chat/GIF purposes — every channel outside the two
-      listed above. Auto-mod's pattern checks (invites/mentions/spam/banned words) are the
-      exception: those run server-wide, in every text channel, since that's a moderation
-      function rather than a conversational one.
+      listed above.
     </div>
     <div class="note warn">
       <strong>Members with the <span class="tag mod">MODZ</span> role are exempt from auto-mod</strong>
@@ -184,12 +196,31 @@
       clan-voice, not a customer-service bot. Mentioning it anywhere else does nothing.</p>
     </div>
     <div class="card">
-      <h3>It has no live game data</h3>
-      <p>It's a general-purpose AI model with a Diablo 4-flavored personality prompt, not a build
-      database. For current-season/meta-specific questions it's told to admit it doesn't know
-      rather than invent a plausible-sounding but wrong answer — including build names, item
-      names, or links. If it ever states something oddly specific and confident about current
-      patch content, be skeptical.</p>
+      <h3>It can actually search the web now</h3>
+      <p>For anything current or specific — build guides, patch notes, real links — it can run a
+      real search and cite the actual page it found, instead of guessing. It's told to stick to
+      what the search results actually say rather than filling gaps from memory, but it's still a
+      small free model: treat confident-sounding specifics (exact item/skill names) with a
+      healthy amount of skepticism, especially for very recent content.</p>
+    </div>
+    <div class="card">
+      <h3>Defaults to Diablo 4, unless you say otherwise</h3>
+      <p>Ambiguous questions get answered as Diablo 4 by default (it won't blend in Path of
+      Exile/WoW/etc. terminology). Name a different game explicitly and it'll answer about that
+      game normally instead — no refusing, other games are fine to talk about.</p>
+    </div>
+    <div class="card">
+      <h3>It knows today's actual date</h3>
+      <p>So "what's next season" or "how old is this patch" get answered against the real
+      calendar instead of a guess from training data.</p>
+    </div>
+    <div class="card">
+      <h3>It can post a boost request for you, mid-conversation</h3>
+      <p>Ask it directly — <code>@KNYWBot I need a boost to lvl 70</code> — and it'll post the
+      request to <code>#looking-for-boost</code> itself, same as running the slash command. You
+      can also ask on someone else's behalf by @mentioning them: <code>@KNYWBot hey, @someone
+      needs a boost to lvl 70</code> posts it under their name, not yours. See
+      <a href="#boost" style="color:#c7cbff">Boost requests</a> for the full flow.</p>
     </div>
     <div class="card">
       <h3>It remembers your conversation — briefly</h3>
@@ -210,7 +241,8 @@
       <h3>Steered away from a few topics</h3>
       <p>It's instructed to decline or steer off real-money-trading/gold-selling/account-selling
       talk and cheat/exploit/botting discussion. Standard AI safety filtering (harassment, hate
-      speech, explicit content) applies underneath regardless.</p>
+      speech, explicit content) applies underneath regardless. Beyond that it's told to be
+      permissive — normal game banter, trading talk, tier-list complaints etc. are never refused.</p>
     </div>
   </section>
 
@@ -227,26 +259,102 @@
     <div class="card">
       <h3>When it does consider one, an AI model judges the vibe</h3>
       <p>It's instructed to be picky — funny, hype, a brag, a fail, a rage-quit moment — and to
-      skip anything ordinary. If it decides something fits, it picks a short search phrase and
-      posts a matching GIF as a reply to that message. The match is vibe-based, not a literal
-      keyword echo, so it can occasionally read a message differently than you'd expect.</p>
+      skip anything ordinary. It reads the last few messages too, so it can catch a punchline
+      that only makes sense with the build-up, not just the latest line in isolation. If it
+      decides something fits, it posts a matching GIF as a reply.</p>
+    </div>
+  </section>
+
+  <section id="karma">
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(254,231,92,0.15)">⭐</span>Karma</h2>
+    <div class="card">
+      <h3>Give or take karma with <code>++</code> / <code>--</code></h3>
+      <p>Type <code>@user++</code> (or <code>--</code>) anywhere in a message, in any channel —
+      no command needed. The bot reacts with ⬆️ to confirm it registered. You can't give
+      yourself karma or give it to bots, and there's a <span class="tag num">5s</span> cooldown
+      between karma actions per person so it can't be spammed.</p>
+    </div>
+    <div class="card">
+      <h3><code>/karma</code> and <code>/karma-leaderboard</code></h3>
+      <p><code>/karma [user]</code> checks anyone's total (defaults to yourself).
+      <code>/karma-leaderboard</code> shows the top 10 in the server.</p>
+    </div>
+    <div class="card">
+      <h3><code>/karma-request</code> — ask someone to give you karma</h3>
+      <p>Posts a public <strong>Approve / Deny</strong> prompt to the person you name — only they
+      can click it. Approve credits the karma immediately; deny just closes it out. Requesting
+      from yourself, from a bot, or too frequently (<span class="tag num">30s</span> cooldown)
+      isn't allowed.</p>
+    </div>
+    <div class="card">
+      <h3>Earned automatically by boosting</h3>
+      <p>Completing a boost request (see below) awards the booster
+      <span class="tag num">+1</span> karma automatically — no manual giving needed for that case.</p>
+    </div>
+  </section>
+
+  <section id="boost">
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(87,242,135,0.15)">🚀</span>Boost requests</h2>
+    <p class="lead">A help-request system for <code>#looking-for-boost</code> — ask for a carry,
+    a <span class="tag boost">Booster</span> claims it, you coordinate in a dedicated thread, and
+    the channel stays clean once it's resolved.</p>
+
+    <div class="card">
+      <h3>Two ways to ask</h3>
+      <p><code>/request-boost</code> opens a short form (just "what do you need help with?").
+      Or just ask the bot directly in chat — <code>@KNYWBot I need a boost to lvl 70</code> — and
+      it posts the same thing for you. You can even ask on someone else's behalf by @mentioning
+      them in the message.</p>
+    </div>
+    <div class="card">
+      <h3>What gets posted</h3>
+      <p>An embed in <code>#looking-for-boost</code> pinging the <span class="tag boost">Booster</span>
+      role, with <strong>Claim</strong> and <strong>Cancel</strong> buttons, plus a dedicated
+      thread for coordination — no DMs needed.</p>
+    </div>
+    <ol class="steps">
+      <li><strong>Claim</strong> — any <span class="tag boost">Booster</span> can claim it (not
+      their own request). It's assigned exclusively; the channel post updates to show who claimed
+      it, and they're added to the thread.</li>
+      <li><strong>Coordinate</strong> — all further conversation happens in the thread, not the
+      main channel.</li>
+      <li><strong>Complete — both sides must agree</strong> — a "Mark Complete" button appears in
+      the thread. Both the requester <em>and</em> the booster have to click it before it actually
+      closes out; one confirmation just shows "waiting on the other person."</li>
+      <li>Once both confirm: the booster gets <span class="tag num">+1</span> karma automatically,
+      and <strong>the whole post + thread is deleted</strong> from the channel — nothing stale
+      lingers.</li>
+    </ol>
+    <div class="card">
+      <h3>Cancel (before claim) &amp; Repost (if a booster backs out)</h3>
+      <p>Before anyone claims it, the requester (or a mod) can hit <strong>Cancel</strong> — the
+      post is deleted outright. If a booster claims it and then flakes, the requester can click
+      <strong>"Booster backed out — repost"</strong> on the claimed post: the old post is deleted
+      and a fresh listing goes up with the same description, no retyping needed.</p>
+    </div>
+    <div class="note">
+      Claim, cancel, complete, and repost all log to <code>#mod-logs</code> — who did what, and
+      how much karma changed hands.
     </div>
   </section>
 
   <section id="automod">
     <p class="kicker">Feature</p>
     <h2><span class="icon" style="background:rgba(237,66,69,0.15)">🛡️</span>Auto-mod</h2>
-    <p class="lead">Runs on every message, in every text channel on the server — this is the one
-    feature not limited to the two AI channels. Checked in order; the first match wins and the
-    message is deleted immediately.</p>
+    <p class="lead">Runs on every message, in every text channel on the server. Checked in order;
+    the first match wins and the message is deleted immediately.</p>
     <ul class="pill-list">
       <li>Discord invite link posted <span class="sub">any <code>discord.gg/…</code> or <code>discord.com/invite/…</code> link, always on</span></li>
       <li>Mass-mentioning <span class="tag num">&gt;5</span> users/roles in one message <span class="sub">counts users and roles together</span></li>
-      <li>A banned word/phrase <span class="sub">currently <span class="tag off">no words configured</span> — this rule is a no-op until a mod adds some</span></li>
+      <li>A banned word/phrase <span class="sub">currently <span class="tag live">configured</span> — standard profanity list, whole-word matching (won't false-positive on things like "Assassin")</span></li>
       <li>Posting too fast: more than <span class="tag num">5</span> messages within <span class="tag num">7s</span> <span class="sub">tracked per person, server-wide</span></li>
     </ul>
     <div class="note">
-      Every auto-mod deletion is recorded — see <a href="#logging" style="color:#c7cbff">Logging</a> below.
+      Every auto-mod deletion also logs an automatic warning against that user (see
+      <a href="#mod" style="color:#c7cbff">Mod commands</a>) — repeat offenders build a visible
+      count even without a mod manually stepping in.
     </div>
   </section>
 
@@ -259,11 +367,15 @@
       <table>
         <thead><tr><th>Event</th><th>What's recorded</th></tr></thead>
         <tbody>
-          <tr><td>Message deleted</td><td>Author, channel, and the message's text</td></tr>
-          <tr><td>Message edited</td><td>Author, channel, before &amp; after text</td></tr>
-          <tr><td>Auto-mod action</td><td>Who, where, which rule, and the offending text</td></tr>
-          <tr><td>Member joins / leaves</td><td>Username and user ID</td></tr>
-          <tr><td><code>/kick</code> <code>/ban</code> <code>/mute</code> <code>/purge</code></td><td>Who ran it, on whom, and the reason given</td></tr>
+          <tr><td>Message deleted / edited</td><td>Author, channel, and the before/after text</td></tr>
+          <tr><td>Auto-mod action</td><td>Who, where, which rule, the offending text, and their running warning count</td></tr>
+          <tr><td>Member joins / leaves</td><td>Username, ID, and — if permitted — which invite was used</td></tr>
+          <tr><td>Nickname / avatar changed</td><td>Before and after</td></tr>
+          <tr><td>Role or channel created / edited / deleted</td><td>What changed, and who did it (if permitted)</td></tr>
+          <tr><td>Bans / unbans</td><td>Including ones done outside <code>/ban</code> — by another mod, another bot, or Discord's own UI</td></tr>
+          <tr><td>Karma given, requested, or awarded</td><td>Who, to whom, how much, and the new total</td></tr>
+          <tr><td>Boost request claimed / cancelled / completed / reposted</td><td>Requester, booster, and any karma awarded</td></tr>
+          <tr><td><code>/kick</code> <code>/ban</code> <code>/mute</code> <code>/purge</code> <code>/warn</code></td><td>Who ran it, on whom, and the reason given</td></tr>
         </tbody>
       </table>
     </div>
@@ -271,6 +383,10 @@
       <strong>What's NOT stored anywhere long-term:</strong> ordinary chat messages that are
       never edited/deleted, and the 1-hour conversation memory described above (in RAM only,
       never written to disk). There's no permanent database of everything anyone's said.
+    </div>
+    <div class="note">
+      <strong>Exclusions exist</strong> — specific channels, roles, or individual users can be
+      exempted from all of this logging. None are currently configured.
     </div>
   </section>
 
@@ -283,11 +399,15 @@
       nothing to do on your end.</p>
     </div>
     <div class="card">
-      <h3>Reaction roles <span class="tag off">none set up yet</span></h3>
-      <p>The system exists — react with a specific emoji on a message a mod has wired up, and
-      you instantly get a matching role; remove your reaction to remove the role — but no
-      messages currently have this configured on this server. This section will get more
-      specific once one exists.</p>
+      <h3>Booster role</h3>
+      <p>Whoever holds the <span class="tag boost">Booster</span> role can claim requests in
+      <code>#looking-for-boost</code>. Ask a <span class="tag mod">MODZ</span> member if you want it.</p>
+    </div>
+    <div class="card">
+      <h3>Reaction roles <span class="tag live">1 active</span></h3>
+      <p>React with a specific emoji on a message a mod has wired up, and you instantly get a
+      matching role; remove your reaction to remove the role. Currently set up in
+      <code>#react-welcome</code> — react ✅ there to grab the <strong>Member</strong> role.</p>
     </div>
   </section>
 
@@ -302,6 +422,10 @@
       <div class="card"><h3><code>/ban</code></h3><p>Ban a member from the server. Takes an optional reason.</p></div>
       <div class="card"><h3><code>/mute</code></h3><p>Discord-native timeout for a given number of minutes, with a reason.</p></div>
       <div class="card"><h3><code>/purge</code></h3><p>Bulk-delete up to 100 recent messages in the current channel.</p></div>
+      <div class="card"><h3><code>/warn</code></h3><p>Issue a tracked warning to a member — DMs them and logs it.</p></div>
+      <div class="card"><h3><code>/warnings</code></h3><p>View a member's warning history and count.</p></div>
+      <div class="card"><h3><code>/clearwarnings</code></h3><p>Reset a member's warning history.</p></div>
+      <div class="card"><h3><code>/karma-set</code></h3><p>Manually correct a member's karma total.</p></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3><code>/reactionrole-add</code></h3>
@@ -315,10 +439,11 @@
     <span class="glyph">🛠️</span>
     <div>
       <h3>Behind the scenes</h3>
-      <p>Every number on this page (cooldowns, thresholds, the mod role name, banned words) is
-      tunable live by the bot owner through a private admin panel, with no bot restart needed.
-      It's not member-accessible — mentioned here purely for completeness, since this page aims
-      to reflect exactly what's actually running, not just what shipped on day one.</p>
+      <p>Every number on this page (cooldowns, thresholds, the mod role name, the booster role
+      name, banned words) is tunable live by the bot owner through a private admin panel, with no
+      bot restart needed. It's not member-accessible — mentioned here purely for completeness,
+      since this page aims to reflect exactly what's actually running, not just what shipped on
+      day one.</p>
     </div>
   </div>
 
