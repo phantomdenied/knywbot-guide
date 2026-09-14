@@ -162,6 +162,7 @@
       <a href="#group">Group requests</a>
       <a href="#battletags">BattleTags</a>
       <a href="#logging">Logging & data</a>
+      <a href="#permissions">Bot permissions</a>
       <a href="#roles">Roles</a>
       <a href="#mod">Mod commands</a>
     </nav>
@@ -438,6 +439,38 @@
     <div class="note">
       <strong>Exclusions exist</strong> — specific channels, roles, or individual users can be
       exempted from all of this logging. None are currently configured.
+    </div>
+  </section>
+
+  <section id="permissions">
+    <p class="kicker">Transparency</p>
+    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">🔑</span>Bot permissions</h2>
+    <p class="lead">Every Discord permission the bot's role is granted, and exactly what it's
+    used for. Nothing here is aspirational — if a permission isn't in this table, no current
+    feature needs it.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Permission</th><th>Exactly what it's used for</th></tr></thead>
+        <tbody>
+          <tr><td>View Channels</td><td>Baseline — reading and posting in the channels it's configured for (chat/GIF channels, <code>#mod-logs</code>, <code>#looking-for-boost</code>, <code>#looking-for-group</code>, <code>#react-welcome</code>)</td></tr>
+          <tr><td>Send Messages</td><td>Every reply, boost/group listing, mod-log entry, and karma response</td></tr>
+          <tr><td>Send Messages in Threads</td><td>Talking inside the coordination thread created for each boost/group request</td></tr>
+          <tr><td>Create Public Threads</td><td>Starting that thread the moment a boost or group request is posted</td></tr>
+          <tr><td>Manage Threads</td><td>Deleting a request's thread when it's cancelled, completed, disbanded, or reposted — Discord requires this specifically to delete a thread, even one the bot made itself</td></tr>
+          <tr><td>Embed Links</td><td>Every embed it posts — boost/group listing cards, mod-log entries, GIF-reaction images, karma leaderboard</td></tr>
+          <tr><td>Add Reactions</td><td>Reacting ⬆️ to confirm a <code>++</code>/<code>--</code> karma action, and reacting with the chosen emoji when a mod runs <code>/reactionrole-add</code></td></tr>
+          <tr><td>Read Message History</td><td>Fetching a target message by ID for <code>/reactionrole-add</code>, and pulling the last few messages of context so the GIF reactor can catch a joke that built up over multiple messages</td></tr>
+          <tr><td>Manage Roles</td><td>Granting/removing a role when someone reacts or un-reacts on a reaction-role message, and auto-assigning the join role to new members</td></tr>
+          <tr><td>View Audit Log</td><td>Figuring out <em>who</em> made a change, for the monitoring log — role edits, channel edits, and bans/unbans done outside the bot</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note warn">
+      <strong>Manage Roles only works if the bot's own role sits above every role it needs to
+      touch</strong> (currently <strong>Member</strong> and whatever roles are wired up as reaction
+      roles) in Server Settings → Roles' ordering. If the bot's role gets moved below one of
+      those, Discord silently blocks the change — no error in the logs, the role just never gets
+      applied.
     </div>
   </section>
 
