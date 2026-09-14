@@ -161,7 +161,6 @@
       <a href="#boost">Boost requests</a>
       <a href="#group">Group requests</a>
       <a href="#battletags">BattleTags</a>
-      <a href="#automod">Auto-mod</a>
       <a href="#logging">Logging & data</a>
       <a href="#roles">Roles</a>
       <a href="#mod">Mod commands</a>
@@ -171,14 +170,13 @@
   <section id="monitoring">
     <p class="kicker">Start here</p>
     <h2><span class="icon" style="background:rgba(88,101,242,0.15)">👁️</span>What it reads, and where</h2>
-    <p class="lead">The short version: auto-mod and karma-giving watch every channel; AI chat,
-    GIF reactions, and web search are confined to two channels; nothing else gets read.</p>
+    <p class="lead">The short version: karma-giving watches every channel; AI chat, GIF reactions,
+    and web search are confined to two channels; nothing else gets read.</p>
 
     <div class="table-scroll">
       <table>
         <thead><tr><th>Feature</th><th>Where it runs</th><th>What it does with the text</th></tr></thead>
         <tbody>
-          <tr><td>Auto-mod scan</td><td>Every channel, every message</td><td>Pattern-checked locally (invite links, mention count, banned words, posting speed) — never sent to an AI model</td></tr>
           <tr><td>Karma (<code>@user++</code>/<code>--</code>)</td><td>Every channel, every message</td><td>Pattern-checked locally for the mention+<code>++</code>/<code>--</code> syntax — no AI involved</td></tr>
           <tr><td>AI chat</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — only when @mentioned</td><td>Sent to an AI model, which can also call a real web search, or post a boost/group request on your behalf (see below)</td></tr>
           <tr><td>GIF reactions</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — every message, not just mentions</td><td>Occasionally sent to an AI model to judge if it's reaction-worthy</td></tr>
@@ -189,11 +187,8 @@
     <div class="note">
       <strong>Not monitored:</strong> DMs (the bot doesn't read or respond to direct messages),
       voice channels/voice chat, and — for chat/GIF purposes — every channel outside the two
-      listed above.
-    </div>
-    <div class="note warn">
-      <strong>Members with the <span class="tag mod">MODZ</span> role are exempt from auto-mod</strong>
-      entirely — their messages aren't pattern-checked.
+      listed above. The bot doesn't auto-delete or auto-punish anything anywhere — see
+      <a href="#logging" style="color:#c7cbff">Logging & data</a> for what it just quietly tracks.
     </div>
   </section>
 
@@ -413,24 +408,6 @@
     </div>
   </section>
 
-  <section id="automod">
-    <p class="kicker">Feature</p>
-    <h2><span class="icon" style="background:rgba(237,66,69,0.15)">🛡️</span>Auto-mod</h2>
-    <p class="lead">Runs on every message, in every text channel on the server. Checked in order;
-    the first match wins and the message is deleted immediately.</p>
-    <ul class="pill-list">
-      <li>Discord invite link posted <span class="sub">any <code>discord.gg/…</code> or <code>discord.com/invite/…</code> link, always on</span></li>
-      <li>Mass-mentioning <span class="tag num">&gt;5</span> users/roles in one message <span class="sub">counts users and roles together</span></li>
-      <li>A banned word/phrase <span class="sub">currently <span class="tag live">configured</span> — standard profanity list, whole-word matching (won't false-positive on things like "Assassin")</span></li>
-      <li>Posting too fast: more than <span class="tag num">5</span> messages within <span class="tag num">7s</span> <span class="sub">tracked per person, server-wide</span></li>
-    </ul>
-    <div class="note">
-      Every auto-mod deletion also logs an automatic warning against that user (see
-      <a href="#mod" style="color:#c7cbff">Mod commands</a>) — repeat offenders build a visible
-      count even without a mod manually stepping in.
-    </div>
-  </section>
-
   <section id="logging">
     <p class="kicker">Transparency</p>
     <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🗂️</span>Logging & data retention</h2>
@@ -441,16 +418,15 @@
         <thead><tr><th>Event</th><th>What's recorded</th></tr></thead>
         <tbody>
           <tr><td>Message deleted / edited</td><td>Author, channel, and the before/after text</td></tr>
-          <tr><td>Auto-mod action</td><td>Who, where, which rule, the offending text, and their running warning count</td></tr>
           <tr><td>Member joins / leaves</td><td>Username, ID, and — if permitted — which invite was used</td></tr>
           <tr><td>Nickname / avatar changed</td><td>Before and after</td></tr>
           <tr><td>Role or channel created / edited / deleted</td><td>What changed, and who did it (if permitted)</td></tr>
-          <tr><td>Bans / unbans</td><td>Including ones done outside <code>/ban</code> — by another mod, another bot, or Discord's own UI</td></tr>
+          <tr><td>Bans / unbans</td><td>Done through Discord's own UI or another bot — this bot has no ban command of its own</td></tr>
           <tr><td>Karma given, requested, or awarded</td><td>Who, to whom, how much, and the new total</td></tr>
           <tr><td>Boost request claimed / cancelled / completed / reposted</td><td>Requester, booster, and any karma awarded</td></tr>
           <tr><td>Group request joined / disbanded</td><td>Leader, who joined or disbanded, and current count</td></tr>
           <tr><td>BattleTag set</td><td>Who it's for, the tag, and who set it (self or a mod)</td></tr>
-          <tr><td><code>/kick</code> <code>/ban</code> <code>/mute</code> <code>/purge</code> <code>/warn</code></td><td>Who ran it, on whom, and the reason given</td></tr>
+          <tr><td><code>/warn</code></td><td>Who ran it, on whom, and the reason given</td></tr>
         </tbody>
       </table>
     </div>
@@ -488,16 +464,13 @@
 
   <section id="mod">
     <p class="kicker">Restricted</p>
-    <h2><span class="icon" style="background:rgba(150,152,157,0.2)">🔧</span>Mod commands</h2>
+    <h2><span class="icon" style="background:rgba(150,152,157,0.2)">🔧</span>MODZ commands</h2>
     <p class="lead">Gated by the <span class="tag mod">MODZ</span> role specifically — not
-    Discord's built-in Kick/Ban/etc. permissions. Someone can have full server admin rights and
-    still not be able to run these without the role, and vice versa.</p>
+    Discord's built-in permissions. Someone can have full server admin rights and still not be
+    able to run these without the role, and vice versa. The bot has no kick/ban/timeout/purge
+    commands of its own — that stays in Discord's native moderation tools, used by hand.</p>
     <div class="grid">
-      <div class="card"><h3><code>/kick</code></h3><p>Remove a member from the server. Takes an optional reason.</p></div>
-      <div class="card"><h3><code>/ban</code></h3><p>Ban a member from the server. Takes an optional reason.</p></div>
-      <div class="card"><h3><code>/mute</code></h3><p>Discord-native timeout for a given number of minutes, with a reason.</p></div>
-      <div class="card"><h3><code>/purge</code></h3><p>Bulk-delete up to 100 recent messages in the current channel.</p></div>
-      <div class="card"><h3><code>/warn</code></h3><p>Issue a tracked warning to a member — DMs them and logs it.</p></div>
+      <div class="card"><h3><code>/warn</code></h3><p>Note a tracked warning against a member — DMs them and logs it. This is a record-keeping tool, not an automatic punishment; nothing happens to the member's access.</p></div>
       <div class="card"><h3><code>/warnings</code></h3><p>View a member's warning history and count.</p></div>
       <div class="card"><h3><code>/clearwarnings</code></h3><p>Reset a member's warning history.</p></div>
       <div class="card"><h3><code>/karma-set</code></h3><p>Manually correct a member's karma total.</p></div>
@@ -515,8 +488,8 @@
     <span class="glyph">🛠️</span>
     <div>
       <h3>Behind the scenes</h3>
-      <p>Every number on this page (cooldowns, thresholds, the mod role name, the booster role
-      name, banned words) is tunable live by the bot owner through a private admin panel, with no
+      <p>Every number on this page (cooldowns, the mod role name, the booster role name, which
+      channels do what) is tunable live by the bot owner through a private admin panel, with no
       bot restart needed. It's not member-accessible — mentioned here purely for completeness,
       since this page aims to reflect exactly what's actually running, not just what shipped on
       day one.</p>
