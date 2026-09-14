@@ -150,6 +150,8 @@
       <a href="#gifs">GIF reactions</a>
       <a href="#karma">Karma</a>
       <a href="#boost">Boost requests</a>
+      <a href="#group">Group requests</a>
+      <a href="#battletags">BattleTags</a>
       <a href="#automod">Auto-mod</a>
       <a href="#logging">Logging & data</a>
       <a href="#roles">Roles</a>
@@ -169,7 +171,7 @@
         <tbody>
           <tr><td>Auto-mod scan</td><td>Every channel, every message</td><td>Pattern-checked locally (invite links, mention count, banned words, posting speed) — never sent to an AI model</td></tr>
           <tr><td>Karma (<code>@user++</code>/<code>--</code>)</td><td>Every channel, every message</td><td>Pattern-checked locally for the mention+<code>++</code>/<code>--</code> syntax — no AI involved</td></tr>
-          <tr><td>AI chat</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — only when @mentioned</td><td>Sent to an AI model, which can also call a real web search or post a boost request on your behalf (see below)</td></tr>
+          <tr><td>AI chat</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — only when @mentioned</td><td>Sent to an AI model, which can also call a real web search, or post a boost/group request on your behalf (see below)</td></tr>
           <tr><td>GIF reactions</td><td><code>#knywbot-testing</code>, <code>#💀-town-square</code> — every message, not just mentions</td><td>Occasionally sent to an AI model to judge if it's reaction-worthy</td></tr>
         </tbody>
       </table>
@@ -215,12 +217,13 @@
       calendar instead of a guess from training data.</p>
     </div>
     <div class="card">
-      <h3>It can post a boost request for you, mid-conversation</h3>
-      <p>Ask it directly — <code>@KNYWBot I need a boost to lvl 70</code> — and it'll post the
-      request to <code>#looking-for-boost</code> itself, same as running the slash command. You
-      can also ask on someone else's behalf by @mentioning them: <code>@KNYWBot hey, @someone
-      needs a boost to lvl 70</code> posts it under their name, not yours. See
-      <a href="#boost" style="color:#c7cbff">Boost requests</a> for the full flow.</p>
+      <h3>It can post a boost or group request for you, mid-conversation</h3>
+      <p>Ask it directly — <code>@KNYWBot I need a boost to lvl 70</code> or <code>@KNYWBot find
+      me a group for helltides</code> — and it'll post the request itself, same as running the
+      slash command. For boosts you can also ask on someone else's behalf by @mentioning them:
+      <code>@KNYWBot hey, @someone needs a boost to lvl 70</code> posts it under their name, not
+      yours. See <a href="#boost" style="color:#c7cbff">Boost requests</a> and
+      <a href="#group" style="color:#c7cbff">Group requests</a> for the full flow.</p>
     </div>
     <div class="card">
       <h3>It remembers your conversation — briefly</h3>
@@ -338,6 +341,67 @@
       Claim, cancel, complete, and repost all log to <code>#mod-logs</code> — who did what, and
       how much karma changed hands.
     </div>
+    <div class="note">
+      Anyone mentioned in a listing shows their <a href="#battletags" style="color:#c7cbff">BattleTag</a>
+      automatically, if they've set one.
+    </div>
+  </section>
+
+  <section id="group">
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">🧭</span>Group requests</h2>
+    <p class="lead">Same idea as boost requests, for group activities instead of a single
+    exclusive claim — <code>#looking-for-group</code>, no role pinged, up to 3 others can join.</p>
+
+    <div class="card">
+      <h3>Two ways to ask</h3>
+      <p><code>/request-group</code> opens a short form ("what are you looking to do?"). Or ask
+      the bot directly — <code>@KNYWBot find me a group for helltides</code> — and it posts the
+      same thing for you.</p>
+    </div>
+    <div class="card">
+      <h3>What gets posted</h3>
+      <p>An embed in <code>#looking-for-group</code> — no role ping this time — with
+      <strong>Join</strong> and <strong>Disband</strong> buttons, plus a dedicated thread for
+      coordination.</p>
+    </div>
+    <ol class="steps">
+      <li><strong>Join</strong> — up to <span class="tag num">3</span> other members can join
+      (not the leader themselves, no duplicates). The post updates live to show who's in and how
+      many slots are left.</li>
+      <li>Once full (<span class="tag num">3/3</span>), the Join button disappears — only
+      Disband remains.</li>
+      <li><strong>Disband</strong> — the leader or a mod can call it off at any point, whether
+      it's empty or full. The post and its thread are both deleted, same clean-channel approach
+      as boost requests.</li>
+    </ol>
+    <div class="note">
+      Unlike boost requests, there's no completion step or karma reward here — once the group's
+      formed, you just go do the thing. Disband is how you close it out when you're done.
+    </div>
+  </section>
+
+  <section id="battletags">
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🏷️</span>BattleTags</h2>
+    <p class="lead">Self-reported, not scraped — Discord doesn't let bots read a linked Battle.net
+    connection even if it's set to show publicly on your profile, so this is opt-in instead.</p>
+    <div class="card">
+      <h3><code>/battletag-set</code></h3>
+      <p>Set your own BattleTag (e.g. <code>Name#1234</code>). <span class="tag mod">MODZ</span>
+      can set it for someone else too, by adding the <code>user</code> option — handy for setting
+      one up on someone's behalf.</p>
+    </div>
+    <div class="card">
+      <h3><code>/battletag</code> <span class="sub" style="display:inline">(private)</span> vs <code>/bt</code> <span class="sub" style="display:inline">(public)</span></h3>
+      <p><code>/battletag [user]</code> checks anyone's tag, visible only to you. <code>/bt</code>
+      posts your own tag publicly in the channel.</p>
+    </div>
+    <div class="note warn">
+      A boost/group listing shows whatever BattleTag was on file <em>at the moment that message
+      was posted or last updated</em> — it's not live. If you change your tag, older still-open
+      listings won't automatically pick up the new one.
+    </div>
   </section>
 
   <section id="automod">
@@ -375,6 +439,8 @@
           <tr><td>Bans / unbans</td><td>Including ones done outside <code>/ban</code> — by another mod, another bot, or Discord's own UI</td></tr>
           <tr><td>Karma given, requested, or awarded</td><td>Who, to whom, how much, and the new total</td></tr>
           <tr><td>Boost request claimed / cancelled / completed / reposted</td><td>Requester, booster, and any karma awarded</td></tr>
+          <tr><td>Group request joined / disbanded</td><td>Leader, who joined or disbanded, and current count</td></tr>
+          <tr><td>BattleTag set</td><td>Who it's for, the tag, and who set it (self or a mod)</td></tr>
           <tr><td><code>/kick</code> <code>/ban</code> <code>/mute</code> <code>/purge</code> <code>/warn</code></td><td>Who ran it, on whom, and the reason given</td></tr>
         </tbody>
       </table>
@@ -426,6 +492,7 @@
       <div class="card"><h3><code>/warnings</code></h3><p>View a member's warning history and count.</p></div>
       <div class="card"><h3><code>/clearwarnings</code></h3><p>Reset a member's warning history.</p></div>
       <div class="card"><h3><code>/karma-set</code></h3><p>Manually correct a member's karma total.</p></div>
+      <div class="card"><h3><code>/battletag-set</code> <span class="sub" style="display:inline">(for others)</span></h3><p>Set a BattleTag on someone else's behalf.</p></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3><code>/reactionrole-add</code></h3>
