@@ -150,9 +150,9 @@
   <header>
     <span class="badge">Clan bot guide — in depth</span>
     <h1>KNYWBot</h1>
-    <p>A complete, accurate breakdown of what the bot currently does — how it talks, what it
-    reads, what it stores, and what it enforces. Numbers reflect live settings and can be tuned
-    by a mod without notice.</p>
+    <p>A complete, accurate breakdown of what the bot currently does for
+    <strong>Know Your Worth (KNYW)</strong> — how it talks, what it reads, what it stores, and
+    what it enforces. Numbers reflect live settings and can be tuned by a mod without notice.</p>
     <nav class="jump">
       <a href="#monitoring">What it reads</a>
       <a href="#chat">Chatting</a>
@@ -161,6 +161,7 @@
       <a href="#boost">Boost requests</a>
       <a href="#group">Group requests</a>
       <a href="#battletags">BattleTags</a>
+      <a href="#events">Events</a>
       <a href="#logging">Logging & data</a>
       <a href="#permissions">Bot permissions</a>
       <a href="#roles">Roles</a>
@@ -276,29 +277,37 @@
   <section id="karma">
     <p class="kicker">Feature</p>
     <h2><span class="icon" style="background:rgba(254,231,92,0.15)">⭐</span>Karma</h2>
+    <div class="note warn" style="margin-top:0">
+      <strong>Only <span class="tag mod">MODZ</span> can give or take karma.</strong> A regular
+      member typing <code>@user++</code> or <code>@user--</code> does nothing — it's silently
+      ignored. The one exception is the automatic award for completing a boost request (below),
+      which any booster can earn regardless of role.
+    </div>
     <div class="card">
-      <h3>Give or take karma with <code>++</code> / <code>--</code></h3>
-      <p>Type <code>@user++</code> (or <code>--</code>) anywhere in a message, in any channel —
-      no command needed. The bot reacts with ⬆️ to confirm it registered. You can't give
-      yourself karma or give it to bots, and there's a <span class="tag num">5s</span> cooldown
-      between karma actions per person so it can't be spammed.</p>
+      <h3>Give or take karma with <code>++</code> / <code>--</code> <span class="tag mod">MODZ only</span></h3>
+      <p>A <span class="tag mod">MODZ</span> member types <code>@user++</code> (or
+      <code>--</code>) anywhere in a message, in any channel — no command needed. The bot reacts
+      with ⬆️ to confirm it registered. Can't be used on yourself or on bots, and there's a
+      <span class="tag num">5s</span> cooldown per person so it can't be spammed.</p>
     </div>
     <div class="card">
       <h3><code>/karma</code> and <code>/karma-leaderboard</code></h3>
-      <p><code>/karma [user]</code> checks anyone's total (defaults to yourself).
-      <code>/karma-leaderboard</code> shows the top 10 in the server.</p>
+      <p><code>/karma [user]</code> checks anyone's total (defaults to yourself) — open to
+      everyone. <code>/karma-leaderboard</code> shows the top 10 in the server.</p>
     </div>
     <div class="card">
-      <h3><code>/karma-request</code> — ask someone to give you karma</h3>
-      <p>Posts a public <strong>Approve / Deny</strong> prompt to the person you name — only they
-      can click it. Approve credits the karma immediately; deny just closes it out. Requesting
-      from yourself, from a bot, or too frequently (<span class="tag num">30s</span> cooldown)
-      isn't allowed.</p>
+      <h3><code>/karma-request</code> — ask a MODZ member to award you karma</h3>
+      <p>Posts a public <strong>Approve / Deny</strong> prompt to the <span class="tag mod">MODZ</span>
+      member you name — only they can click it, since only MODZ can actually give karma. Naming
+      someone without the role gets rejected up front instead of posting a prompt nobody can
+      approve. Requesting from yourself, from a bot, or too frequently
+      (<span class="tag num">30s</span> cooldown) isn't allowed.</p>
     </div>
     <div class="card">
-      <h3>Earned automatically by boosting</h3>
+      <h3>Earned automatically by boosting <span class="tag live">not MODZ-gated</span></h3>
       <p>Completing a boost request (see below) awards the booster
-      <span class="tag num">+1</span> karma automatically — no manual giving needed for that case.</p>
+      <span class="tag num">+1</span> karma automatically, regardless of role — this is the one
+      way a regular member's karma changes without a MODZ member doing it by hand.</p>
     </div>
   </section>
 
@@ -409,6 +418,43 @@
     </div>
   </section>
 
+  <section id="events">
+    <p class="kicker">Feature</p>
+    <h2><span class="icon" style="background:rgba(88,101,242,0.15)">📅</span>Events</h2>
+    <p class="lead">A real Discord Scheduled Event (shows in the server's Events tab, native
+    RSVP) plus a custom reminder poster in <code>#events</code>, since Discord's own event
+    reminder only fires once, right at start time, with no lead time.</p>
+    <div class="card">
+      <h3><code>/event-create</code> <span class="tag mod">MODZ only</span></h3>
+      <p>Title, description, a date (<code>YYYY-MM-DD</code>) and time
+      (24h <code>HH:mm</code>, interpreted in the server's configured timezone), plus optional
+      duration, location, and a repeat schedule (weekly / biweekly / monthly). Creates the
+      Discord event and immediately posts an announcement to <code>#events</code>.</p>
+    </div>
+    <div class="card">
+      <h3><code>/event-list</code></h3>
+      <p>Open to everyone. Shows every upcoming event with its time and a live "interested"
+      count pulled straight from Discord.</p>
+    </div>
+    <div class="card">
+      <h3><code>/event-cancel</code> <span class="tag mod">MODZ only</span></h3>
+      <p>Takes the event ID shown in <code>/event-list</code>. Deletes the Discord event and
+      stops any further reminders for it.</p>
+    </div>
+    <div class="card">
+      <h3>Reminders</h3>
+      <p>A background check posts to <code>#events</code> at configurable lead times before
+      start — by default <span class="tag num">24h</span>, <span class="tag num">1h</span>, and
+      <span class="tag num">15min</span> — pinging whoever holds the <strong>Event Ping</strong>
+      role. That role is meant to be opt-in — ask a <span class="tag mod">MODZ</span> member how
+      to grab it (typically set up as a <a href="#roles" style="color:#c7cbff">reaction role</a>).</p>
+    </div>
+    <div class="note">
+      A recurring event automatically creates its next occurrence once the current one has
+      passed, with reminders reset for that new date.
+    </div>
+  </section>
+
   <section id="logging">
     <p class="kicker">Transparency</p>
     <h2><span class="icon" style="background:rgba(254,231,92,0.15)">🗂️</span>Logging & data retention</h2>
@@ -427,6 +473,7 @@
           <tr><td>Boost request claimed / cancelled / completed / reposted</td><td>Requester, booster, and any karma awarded</td></tr>
           <tr><td>Group request joined / disbanded</td><td>Leader, who joined or disbanded, and current count</td></tr>
           <tr><td>BattleTag set</td><td>Who it's for, the tag, and who set it (self or a mod)</td></tr>
+          <tr><td>Event created / cancelled</td><td>Title, who did it, when it's scheduled, and recurrence</td></tr>
           <tr><td><code>/warn</code></td><td>Who ran it, on whom, and the reason given</td></tr>
         </tbody>
       </table>
@@ -462,6 +509,7 @@
           <tr><td>Read Message History</td><td>Fetching a target message by ID for <code>/reactionrole-add</code>, and pulling the last few messages of context so the GIF reactor can catch a joke that built up over multiple messages</td></tr>
           <tr><td>Manage Roles</td><td>Granting/removing a role when someone reacts or un-reacts on a reaction-role message, and auto-assigning the join role to new members</td></tr>
           <tr><td>View Audit Log</td><td>Figuring out <em>who</em> made a change, for the monitoring log — role edits, channel edits, and bans/unbans done outside the bot</td></tr>
+          <tr><td>Manage Events</td><td>Creating, fetching, and deleting the server's native Scheduled Events for <code>/event-create</code>, <code>/event-list</code>, and <code>/event-cancel</code></td></tr>
         </tbody>
       </table>
     </div>
@@ -493,6 +541,12 @@
       matching role; remove your reaction to remove the role. Currently set up in
       <code>#react-welcome</code> — react ✅ there to grab the <strong>Member</strong> role.</p>
     </div>
+    <div class="card">
+      <h3>Event Ping role</h3>
+      <p>Opt-in — holding it means you get pinged when an <a href="#events" style="color:#c7cbff">event</a>
+      is announced or about to start. Not tied to any special access, purely a notification
+      preference.</p>
+    </div>
   </section>
 
   <section id="mod">
@@ -508,6 +562,8 @@
       <div class="card"><h3><code>/clearwarnings</code></h3><p>Reset a member's warning history.</p></div>
       <div class="card"><h3><code>/karma-set</code></h3><p>Manually correct a member's karma total.</p></div>
       <div class="card"><h3><code>/battletag-set</code> <span class="sub" style="display:inline">(for others)</span></h3><p>Set a BattleTag on someone else's behalf.</p></div>
+      <div class="card"><h3><code>/event-create</code></h3><p>Schedule a clan event with reminders — see <a href="#events" style="color:#c7cbff">Events</a>.</p></div>
+      <div class="card"><h3><code>/event-cancel</code></h3><p>Cancel a scheduled event and stop its reminders.</p></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h3><code>/reactionrole-add</code></h3>
