@@ -437,6 +437,15 @@
       count pulled straight from Discord.</p>
     </div>
     <div class="card">
+      <h3><code>/calendar</code></h3>
+      <p>Open to everyone. Posts a visual month-view calendar right in the channel — a text grid
+      marking which days have something on, plus a list of that month's events underneath.
+      <strong>Prev ◀</strong> / <strong>Next ▶</strong> buttons let anyone page through other
+      months without re-running the command. This is a read-only mirror of the same calendar a
+      mod sees in the admin panel — creating/editing/cancelling still goes through
+      <code>/event-create</code>, the admin panel, or <code>/event-cancel</code>.</p>
+    </div>
+    <div class="card">
       <h3><code>/event-cancel</code> <span class="tag mod">MODZ only</span></h3>
       <p>Takes the event ID shown in <code>/event-list</code>. Deletes the Discord event and
       stops any further reminders for it.</p>
@@ -452,6 +461,12 @@
     <div class="note">
       A recurring event automatically creates its next occurrence once the current one has
       passed, with reminders reset for that new date.
+    </div>
+    <div class="note">
+      <span class="tag mod">MODZ</span> also get a full interactive calendar in the admin
+      panel — click any day to create an event there, click an existing one to edit or delete
+      it. It's the exact same events <code>/calendar</code> and <code>/event-list</code> show;
+      the panel is just where the create/edit/delete side lives instead of the slash commands.
     </div>
   </section>
 
